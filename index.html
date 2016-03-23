@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>ADaM Application Data Manager</title>
+    <title>ADaM - API Documentation</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -91,7 +91,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;curl&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -101,7 +101,7 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" />
         <div class="lang-selector">
-              <a href="#" data-language-name="curl">curl</a>
+              <a href="#" data-language-name="shell">shell</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -117,15 +117,57 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id="adam">ADaM</h1>
+        <h1 id="introduction">Introduction</h1>
+
+<p>ADaM stands for <strong>A</strong>pplication <strong>Da</strong>ta <strong>M</strong>anager
+ADaM is the backend serving Nomad Education mobile applications, and exposing the leads API to Education Institutions.</p>
+
+<p>Access to the endpoints depends on authentication levels</p>
+
+<h1 id="environments">Environments</h1>
+
+<p>ADaM builts in two environments: staging and production. Production environement URI has major version built in the subdomain.</p>
+
+<ul>
+<li>staging endpoint: <code class="prettyprint">https://staging.adam.nomadeducation.fr</code></li>
+<li>production endpoint : <code class="prettyprint">https://v1.adam.nomadeducation.fr</code></li>
+</ul>
+
+<aside class="notice">
+All requests to the API must be made in HTTPS only. Requests may be redirected from HTTP to HTTPS but for better sanity, always make API requests in HTTPS
+</aside>
 
 <h1 id="authentication">Authentication</h1>
 
+<h2 id="basic-auth">Basic Auth</h2>
+
+<blockquote>
+<p>To authorize, use this code:</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request. </span>
+<span class="c"># Example to get the leads in the production environment.</span>
+curl GET <span class="s2">"https://v1.adam.nomadeducation.fr/leads"</span>
+  -H <span class="s2">"Authorization: Basic ZGV2ZWxvcGVyOnRlc3Q="</span>
+</code></pre>
+
+<p>ADaM uses Basic Auth authentication. An API key must be included in all API requests to the server in a header like the following:</p>
+
+<p><code class="prettyprint">Authorization: Basic  ZGV2ZWxvcGVyOnRlc3Q=</code></p>
+
+<aside class="success">
+You must replace <code>ZGV2ZWxvcGVyOnRlc3Q=</code> with your personal API key.
+</aside>
+
 <h2 id="login">Login</h2>
 
-<p>Session authentication (w/ cookie)</p>
+<p>This endpoint is for session authentication (w/ cookie)</p>
 
-<p>POST /auth/local</p>
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /auth/local</code></p>
+<pre class="highlight shell"><code>curl POST <span class="s2">"https://v1.adam.nomadeducation.fr/auth/local"</span>
+  -H <span class="s2">"Authorization: Basic ZGV2ZWxvcGVyOnRlc3Q="</span>
+</code></pre>
 
 <h3 id="parameters">Parameters</h3>
 
@@ -541,6 +583,72 @@
 
 <h2 id="list-categories">List categories</h2>
 
+<blockquote>
+<p>Success response</p>
+</blockquote>
+<pre class="highlight shell"><code>HTTP/1.1 200 OK
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"appId"</span>: <span class="s2">"55eef4f8deeafc364ce11718"</span>,
+    <span class="s2">"createdBy"</span>: <span class="s2">"55eef4f7deeafc364ce116c7"</span>,
+    <span class="s2">"owner"</span>: <span class="s2">"55eef4f7deeafc364ce116c7"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"Submenu 1"</span>,
+    <span class="s2">"categories"</span>: <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">"id"</span>: <span class="s2">"55eef4f9deeafc364ce1173a"</span>,
+        <span class="s2">"type"</span>: <span class="s2">"category"</span>,
+        <span class="s2">"mainParent"</span>: <span class="nb">true</span> // This is useful to get the full path of an item <span class="o">(</span>e.g breadcrums, tagging...<span class="o">)</span> that has multiple parents. The <span class="s2">"mainParent"</span> should be used <span class="k">if </span>it exists.
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"id"</span>: <span class="s2">"d5eef4f9deeafc364ce1178f"</span>,
+        <span class="s2">"type"</span>: <span class="s2">"category"</span>
+      <span class="o">}</span>
+    <span class="o">]</span>,
+    <span class="s2">"children"</span>: <span class="o">[]</span>,
+    <span class="s2">"createdAt"</span>: <span class="s2">"2015-09-08T14:47:21.911Z"</span>,
+    <span class="s2">"updatedAt"</span>: <span class="s2">"2015-09-08T14:47:21.911Z"</span>,
+    <span class="s2">"id"</span>: <span class="s2">"55eef4f9deeafc364ce1173b"</span>
+  <span class="o">}</span>,
+  <span class="o">{</span>
+    <span class="s2">"appId"</span>: <span class="s2">"55eef4f8deeafc364ce11718"</span>,
+    <span class="s2">"createdBy"</span>: <span class="s2">"55eef4f7deeafc364ce116c7"</span>,
+    <span class="s2">"owner"</span>: <span class="s2">"55eef4f7deeafc364ce116c7"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"Submenu 2"</span>,
+    <span class="s2">"categories"</span>: <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">"id"</span>: <span class="s2">"55eef4f9deeafc364ce1173a"</span>,
+        <span class="s2">"type"</span>: <span class="s2">"category"</span>
+      <span class="o">}</span>
+    <span class="o">]</span>,
+    <span class="s2">"children"</span>: <span class="o">[]</span>,
+    <span class="s2">"createdAt"</span>: <span class="s2">"2015-09-08T14:47:22.010Z"</span>,
+    <span class="s2">"updatedAt"</span>: <span class="s2">"2015-09-08T14:47:22.010Z"</span>,
+    <span class="s2">"id"</span>: <span class="s2">"55eef4fadeeafc364ce1173c"</span>
+  <span class="o">}</span>,
+  <span class="o">{</span>
+    <span class="s2">"appId"</span>: <span class="s2">"55eef4f8deeafc364ce11718"</span>,
+    <span class="s2">"createdBy"</span>: <span class="s2">"55eef4f7deeafc364ce116c7"</span>,
+    <span class="s2">"owner"</span>: <span class="s2">"55eef4f7deeafc364ce116c7"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"Menu"</span>,
+    <span class="s2">"categories"</span>: <span class="o">[]</span>,
+    <span class="s2">"children"</span>: <span class="o">[</span>
+      <span class="o">{</span>
+        <span class="s2">"id"</span>: <span class="s2">"55eef4f9deeafc364ce1173b"</span>,
+        <span class="s2">"type"</span>: <span class="s2">"category"</span>
+      <span class="o">}</span>,
+      <span class="o">{</span>
+        <span class="s2">"id"</span>: <span class="s2">"55eef4fadeeafc364ce1173c"</span>,
+        <span class="s2">"type"</span>: <span class="s2">"category"</span>
+      <span class="o">}</span>
+    <span class="o">]</span>,
+    <span class="s2">"createdAt"</span>: <span class="s2">"2015-09-08T14:47:21.821Z"</span>,
+    <span class="s2">"updatedAt"</span>: <span class="s2">"2015-09-08T14:47:22.332Z"</span>,
+    <span class="s2">"id"</span>: <span class="s2">"55eef4f9deeafc364ce1173a"</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre>
+
 <p>Get list of categories</p>
 
 <p>GET /categories</p>
@@ -565,72 +673,6 @@
 <td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
 </tr>
 </tbody></table>
-
-<h3 id="success-response">Success Response</h3>
-
-<p>Success-Response:</p>
-<pre class="highlight plaintext"><code>HTTP/1.1 200 OK
-
-[
-  {
-    "appId": "55eef4f8deeafc364ce11718",
-    "createdBy": "55eef4f7deeafc364ce116c7",
-    "owner": "55eef4f7deeafc364ce116c7",
-    "name": "Submenu 1",
-    "categories": [
-      {
-        "id": "55eef4f9deeafc364ce1173a",
-        "type": "category",
-        "mainParent": true // This is useful to get the full path of an item (e.g breadcrums, tagging...) that has multiple parents. The "mainParent" should be used if it exists.
-      },
-      {
-        "id": "d5eef4f9deeafc364ce1178f",
-        "type": "category"
-      }
-    ],
-    "children": [],
-    "createdAt": "2015-09-08T14:47:21.911Z",
-    "updatedAt": "2015-09-08T14:47:21.911Z",
-    "id": "55eef4f9deeafc364ce1173b"
-  },
-  {
-    "appId": "55eef4f8deeafc364ce11718",
-    "createdBy": "55eef4f7deeafc364ce116c7",
-    "owner": "55eef4f7deeafc364ce116c7",
-    "name": "Submenu 2",
-    "categories": [
-      {
-        "id": "55eef4f9deeafc364ce1173a",
-        "type": "category"
-      }
-    ],
-    "children": [],
-    "createdAt": "2015-09-08T14:47:22.010Z",
-    "updatedAt": "2015-09-08T14:47:22.010Z",
-    "id": "55eef4fadeeafc364ce1173c"
-  },
-  {
-    "appId": "55eef4f8deeafc364ce11718",
-    "createdBy": "55eef4f7deeafc364ce116c7",
-    "owner": "55eef4f7deeafc364ce116c7",
-    "name": "Menu",
-    "categories": [],
-    "children": [
-      {
-        "id": "55eef4f9deeafc364ce1173b",
-        "type": "category"
-      },
-      {
-        "id": "55eef4fadeeafc364ce1173c",
-        "type": "category"
-      }
-    ],
-    "createdAt": "2015-09-08T14:47:21.821Z",
-    "updatedAt": "2015-09-08T14:47:22.332Z",
-    "id": "55eef4f9deeafc364ce1173a"
-  }
-]
-</code></pre>
 
 <h2 id="get-category">Get category</h2>
 
@@ -1392,7 +1434,7 @@
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="curl">curl</a>
+                <a href="#" data-language-name="shell">shell</a>
           </div>
       </div>
     </div>
