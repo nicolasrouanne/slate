@@ -4,10 +4,8 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>ADaM Application Data Manager</title>
 
-    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
-    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
     <style>
       .highlight table td { padding: 5px; }
 .highlight table pre { margin: 0; }
@@ -88,10 +86,12 @@
   color: #90a959;
 }
     </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;]">
+  <body class="index" data-languages="[&quot;curl&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -101,9 +101,7 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
+              <a href="#" data-language-name="curl">curl</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -119,161 +117,1217 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id="introduction">Introduction</h1>
-
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
-
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
-
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
+        <h1 id="adam">ADaM</h1>
 
 <h1 id="authentication">Authentication</h1>
 
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h2 id="login">Login</h2>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p>Session authentication (w/ cookie)</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
+<p>POST /auth/local</p>
 
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
-</blockquote>
-
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-<h1 id="kittens">Kittens</h1>
-
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-
-<p>This endpoint retrieves all kittens.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/api/kittens</code></p>
-
-<h3 id="query-parameters">Query Parameters</h3>
+<h3 id="parameters">Parameters</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
-<th>Default</th>
+<th>Name</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>identifier</td>
+<td>String</td>
+<td><p>User name</p></td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>password</td>
+<td>String</td>
+<td><p>User password</p></td>
 </tr>
 </tbody></table>
 
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
+<h1 id="ads">Ads</h1>
 
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h2 id="get-ad">Get ad</h2>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p><code class="prettyprint">GET /ads/:id</code></p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-
-<p>This endpoint retrieves a specific kitten.</p>
-
-<aside class="warning">Inside HTML code blocks like this one, you can&rsquo;t use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-
-<h3 id="url-parameters">URL Parameters</h3>
+<h3 id="headers">Headers</h3>
 
 <table><thead>
 <tr>
-<th>Parameter</th>
+<th>Name</th>
+<th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &lsquo;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Ad unique ID.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-ads">List ads</h2>
+
+<p>List all ads the user has read permission on</p>
+
+<p>GET /ads</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h1 id="apps">Apps</h1>
+
+<h2 id="get-app">Get app</h2>
+
+<p>GET /apps/:id</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>App unique ID.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-apps">List apps</h2>
+
+<p>Get list of apps</p>
+
+<p>GET /apps</p>
+
+<h1 id="leads">Leads</h1>
+
+<h2 id="get-lead">Get lead</h2>
+
+<p>GET /leads/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Lead unique ID.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-leads">List leads</h2>
+
+<p>GET /leads?from=:from&amp;appId=:appId</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>from</td>
+<td>DateTime</td>
+<td><strong>optional</strong> <p>Date used to filter leads</p></td>
+</tr>
+<tr>
+<td>appId</td>
+<td>String</td>
+<td><strong>optional</strong> <p>ID of app to fetch leads from</p></td>
+</tr>
+</tbody></table>
+
+<h1 id="media">Media</h1>
+
+<h2 id="list-media">List media</h2>
+
+<p>Get list of media</p>
+
+<p>GET /media</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-medium">Get medium</h2>
+
+<p>GET /media/:id</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Medium unique ID.</p></td>
+</tr>
+</tbody></table>
+
+<h1 id="notifications">Notifications</h1>
+
+<h2 id="acknowledge-reception-of-a-notification">Acknowledge reception of a notification</h2>
+
+<p>This service should posted to to acknowledge reception of (or click on) a notification.</p>
+
+<p>POST /notifications/acknowledgment</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>notificationId</td>
+<td>String</td>
+<td><p>The unique ID of the notification</p></td>
+</tr>
+<tr>
+<td>appInstallationId</td>
+<td>String</td>
+<td><p>The unique ID of the appinstallation</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="register-or-update-the-app-installation">Register or update the app installation</h2>
+
+<p>This service should be used by apps to register in ADaM. It is also responsible for receiving the app&rsquo;s registration to push notifications</p>
+
+<p>POST /appinstallations</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>deviceUUID</td>
+<td>String</td>
+<td><p>A unique ID generated at app installation. Unique across re-installations on Android, not on iOS.</p></td>
+</tr>
+<tr>
+<td>deviceOS</td>
+<td>String</td>
+<td><p>An identification of the OS</p></td>
+</tr>
+<tr>
+<td>deviceOSVersion</td>
+<td>String</td>
+<td><p>The OS version</p></td>
+</tr>
+<tr>
+<td>appVersion</td>
+<td>String</td>
+<td><p>The app version</p></td>
+</tr>
+<tr>
+<td>deviceNotificationToken</td>
+<td>String</td>
+<td><strong>optional</strong> <p>The notification token provided by APNS or GCM</p></td>
+</tr>
+</tbody></table>
+
+<h1 id="posts">Posts</h1>
+
+<h2 id="get-catalogue-apps">Get catalogue apps</h2>
+
+<p>Get catalogue app by ID</p>
+
+<p>GET /catalogapps/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>CatalogApp ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-catalogue-apps">List catalogue apps</h2>
+
+<p>Get list of catalogue app posts</p>
+
+<p>GET /catalogapps</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-categories">List categories</h2>
+
+<p>Get list of categories</p>
+
+<p>GET /categories</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="success-response">Success Response</h3>
+
+<p>Success-Response:</p>
+<pre class="highlight plaintext"><code>HTTP/1.1 200 OK
+
+[
+  {
+    "appId": "55eef4f8deeafc364ce11718",
+    "createdBy": "55eef4f7deeafc364ce116c7",
+    "owner": "55eef4f7deeafc364ce116c7",
+    "name": "Submenu 1",
+    "categories": [
+      {
+        "id": "55eef4f9deeafc364ce1173a",
+        "type": "category",
+        "mainParent": true // This is useful to get the full path of an item (e.g breadcrums, tagging...) that has multiple parents. The "mainParent" should be used if it exists.
+      },
+      {
+        "id": "d5eef4f9deeafc364ce1178f",
+        "type": "category"
+      }
+    ],
+    "children": [],
+    "createdAt": "2015-09-08T14:47:21.911Z",
+    "updatedAt": "2015-09-08T14:47:21.911Z",
+    "id": "55eef4f9deeafc364ce1173b"
+  },
+  {
+    "appId": "55eef4f8deeafc364ce11718",
+    "createdBy": "55eef4f7deeafc364ce116c7",
+    "owner": "55eef4f7deeafc364ce116c7",
+    "name": "Submenu 2",
+    "categories": [
+      {
+        "id": "55eef4f9deeafc364ce1173a",
+        "type": "category"
+      }
+    ],
+    "children": [],
+    "createdAt": "2015-09-08T14:47:22.010Z",
+    "updatedAt": "2015-09-08T14:47:22.010Z",
+    "id": "55eef4fadeeafc364ce1173c"
+  },
+  {
+    "appId": "55eef4f8deeafc364ce11718",
+    "createdBy": "55eef4f7deeafc364ce116c7",
+    "owner": "55eef4f7deeafc364ce116c7",
+    "name": "Menu",
+    "categories": [],
+    "children": [
+      {
+        "id": "55eef4f9deeafc364ce1173b",
+        "type": "category"
+      },
+      {
+        "id": "55eef4fadeeafc364ce1173c",
+        "type": "category"
+      }
+    ],
+    "createdAt": "2015-09-08T14:47:21.821Z",
+    "updatedAt": "2015-09-08T14:47:22.332Z",
+    "id": "55eef4f9deeafc364ce1173a"
+  }
+]
+</code></pre>
+
+<h2 id="get-category">Get category</h2>
+
+<p>Get category by ID</p>
+
+<p>GET /categories/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Category ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-event">Get event</h2>
+
+<p>Get event by ID</p>
+
+<p>GET /events/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Event ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-events">List events</h2>
+
+<p>Get list of events</p>
+
+<p>GET /events</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-form">Get form</h2>
+
+<p>Get form by ID</p>
+
+<p>GET /forms/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Form ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-forms">List forms</h2>
+
+<p>Get list of forms</p>
+
+<p>GET /forms</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-job">Get job</h2>
+
+<p>Get job by ID</p>
+
+<p>GET /jobs/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Job ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-jobs">List jobs</h2>
+
+<p>Get list of jobs</p>
+
+<p>GET /jobs</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-post">Get post</h2>
+
+<p>Get post by ID</p>
+
+<p>GET /posts/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Post ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-posts">List posts</h2>
+
+<p>Get list of posts</p>
+
+<p>GET /posts</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-quiz">Get quiz</h2>
+
+<p>Get quiz by ID</p>
+
+<p>GET /quizzes/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Quiz ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-quizzes">List quizzes</h2>
+
+<p>Get list of quizzes</p>
+
+<p>GET /quizzes</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-sponsorinfos">Get sponsorinfos</h2>
+
+<p>Get sponsor infos by ID</p>
+
+<p>GET /sponsorinfos/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>SponsorInfo ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-sponsorinfos">List sponsorinfos</h2>
+
+<p>Get list of sponsor infos posts</p>
+
+<p>GET /sponsorinfos</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="get-tag">Get tag</h2>
+
+<p>Get tag by ID</p>
+
+<p>GET /tags/:id</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Tag ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-tags">List tags</h2>
+
+<p>Get list of tags</p>
+
+<p>GET /tags</p>
+
+<h2 id="submit-form">Submit form</h2>
+
+<p>Submit a form to create leads. Designed after the /leads endpoint. appId will be set automatically thanks to the authentication token.</p>
+
+<p>POST /forms/submit</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>appinstallationId</td>
+<td>String</td>
+<td><strong>optional</strong> <p>(Highly recommended for tracking) The app installation&rsquo;s id received from the post to appinstallations (<a href="#api-Notifications-RegisterAppInstallation">see registration</a>)</p></td>
+</tr>
+<tr>
+<td>sponsors</td>
+<td>Object[]</td>
+<td><strong>optional</strong> <p>Array of sponsors&rsquo; information to create leads.<br /><b>If this is empty, a &ldquo;registration&rdquo; lead is created.</b> If not, leads will be created for each sponsor in the array, with the <code>sponsor</code> or <code>opt-in</code> type.<br />An object should be added to this array if the form&rsquo;s <code>sponsorId</code> field is defined. <br />An object should be added to this array if the form contains a field with <code>sponsor_optin</code> <code>type</code> field <b>and the user checked it</b>.</p></td>
+</tr>
+<tr>
+<td>sponsors.sponsorId</td>
+<td>String</td>
+<td><p>The sponsor&rsquo;s ID</p></td>
+</tr>
+<tr>
+<td>sponsors.optIn</td>
+<td>Boolean</td>
+<td><p>Opt-in param<br /><b>If this is set to <code>true</code> the created lead will have the <code>opt-in</code> type. If not it will have the <code>sponsor</code> type.</b></p></td>
+</tr>
+<tr>
+<td>sponsors.optInOptions</td>
+<td>Array</td>
+<td><strong>optional</strong> <p>Array of arbitrary options like [&ldquo;Paris&rdquo;]&hellip;</p></td>
+</tr>
+<tr>
+<td>adId</td>
+<td>String</td>
+<td><strong>optional</strong> <p>The id of the ad the user clicked to navigate to the</p></td>
+</tr>
+<tr>
+<td>email</td>
+<td>String</td>
+<td><strong>optional</strong> <p>Validated email address</p></td>
+</tr>
+<tr>
+<td>firstName</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s first name</p></td>
+</tr>
+<tr>
+<td>lastName</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s family name</p></td>
+</tr>
+<tr>
+<td>phone</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s international phone number (e.g +33612345678 for france)</p></td>
+</tr>
+<tr>
+<td>address</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s street address (row 1)</p></td>
+</tr>
+<tr>
+<td>address_2</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s street address (row 2)</p></td>
+</tr>
+<tr>
+<td>state</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s address state / province / regions / departement</p></td>
+</tr>
+<tr>
+<td>zip</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s address postal/zip code</p></td>
+</tr>
+<tr>
+<td>country</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s address country ISO code (2 chars)</p></td>
+</tr>
+<tr>
+<td>birthdate</td>
+<td>Date</td>
+<td><strong>optional</strong> <p>User&rsquo;s date of birth</p></td>
+</tr>
+<tr>
+<td>nationality</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s nationality</p></td>
+</tr>
+<tr>
+<td>levelOfEducation</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s level of education (text)</p></td>
+</tr>
+<tr>
+<td>levelOfEducationAbsolute</td>
+<td>Integer</td>
+<td><strong>optional</strong> <p>User&rsquo;s absolute level of education (integer)</p></td>
+</tr>
+<tr>
+<td>major</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s major</p></td>
+</tr>
+<tr>
+<td>branch</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s branch</p></td>
+</tr>
+<tr>
+<td>gender</td>
+<td>String</td>
+<td><strong>optional</strong> <p>User&rsquo;s gender</p></td>
+</tr>
+<tr>
+<td>rawData</td>
+<td>Object</td>
+<td><strong>optional</strong> <p>Raw form data (JSON) with field definitions and userValue keys.</p></td>
+</tr>
+</tbody></table>
+
+<h1 id="questions">Questions</h1>
+
+<h2 id="get-question">Get question</h2>
+
+<p>Get question by ID</p>
+
+<p>GET /questions/:id</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+</tbody></table>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>String</td>
+<td><p>Question ID</p></td>
+</tr>
+</tbody></table>
+
+<h2 id="list-questions">List questions</h2>
+
+<p>Get list of quiz questions</p>
+
+<p>GET /questions</p>
+
+<h3 id="headers">Headers</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Authorization</td>
+<td>String</td>
+<td><p>Basic + authorization token<br />e.g. &#39;Basic fqQfg7a6dg5A=&rsquo;</p></td>
+</tr>
+<tr>
+<td>X-Json-MD5</td>
+<td>String</td>
+<td><p>Last MD5 hash of the feed. If the feed hasn&rsquo;t changed, the response status will be 304.</p></td>
+</tr>
+</tbody></table>
+
+<h1 id="sponsors">Sponsors</h1>
+
+<h2 id="get-sponsor">Get sponsor</h2>
+
+<p>List all sponsors</p>
+
+<p>GET /sponsors/:id</p>
+
+<h2 id="list-sponsors">List sponsors</h2>
+
+<p>GET /sponsors</p>
+
+<h3 id="parameters">Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>root</td>
+<td>Object[]</td>
+<td><p>Array of <a href="#api-Sponsors-GetSponsor">sponsors</a></p></td>
 </tr>
 </tbody></table>
 
@@ -338,9 +1392,7 @@ Remember — a happy kitten is an authenticated kitten!
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
+                <a href="#" data-language-name="curl">curl</a>
           </div>
       </div>
     </div>
