@@ -1,8 +1,8 @@
 ---
-title: ADaM Application Data Manager
+title: ADaM - API Documentation
 
 language_tabs:
-  - curl
+  - shell
 
 toc_footers:
   - <a href='#'>Sign Up for a Developer Key</a>
@@ -14,15 +14,55 @@ includes:
 search: true
 ---
 
-# ADaM
+# Introduction
+ADaM stands for **A**pplication **Da**ta **M**anager
+ADaM is the backend serving Nomad Education mobile applications, and exposing the leads API to Education Institutions.
+
+Access to the endpoints depends on authentication levels
+
+# Environments
+ADaM builts in two environments: staging and production. Production environement URI has major version built in the subdomain.
+
+* staging endpoint: `https://staging.adam.nomadeducation.fr`
+* production endpoint : `https://v1.adam.nomadeducation.fr`
+
+<aside class="notice">
+All requests to the API must be made in HTTPS only. Requests may be redirected from HTTP to HTTPS but for better sanity, always make API requests in HTTPS
+</aside>
 
 # Authentication
 
+## Basic Auth
+
+> To authorize, use this code:
+
+```shell
+# With shell, you can just pass the correct header with each request. 
+# Example to get the leads in the production environment.
+curl GET "https://v1.adam.nomadeducation.fr/leads"
+  -H "Authorization: Basic ZGV2ZWxvcGVyOnRlc3Q="
+```
+
+ADaM uses Basic Auth authentication. An API key must be included in all API requests to the server in a header like the following:
+
+`Authorization: Basic  ZGV2ZWxvcGVyOnRlc3Q=`
+
+<aside class="success">
+You must replace <code>ZGV2ZWxvcGVyOnRlc3Q=</code> with your personal API key.
+</aside>
+
+
 ## Login
+This endpoint is for session authentication (w/ cookie)
 
-<p>Session authentication (w/ cookie)</p>
+### HTTP Request
 
-  POST /auth/local
+`POST /auth/local`
+
+```shell
+curl POST "https://v1.adam.nomadeducation.fr/auth/local"
+  -H "Authorization: Basic ZGV2ZWxvcGVyOnRlc3Q="
+```
 
 
 ### Parameters
@@ -233,22 +273,9 @@ search: true
 
 ## List categories
 
-<p>Get list of categories</p>
+> Success response
 
-  GET /categories
-
-### Headers
-
-| Name    | Type      | Description                          |
-|---------|-----------|--------------------------------------|
-| Authorization     | String      |  <p>Basic + authorization token<br />e.g. 'Basic fqQfg7a6dg5A='</p>             |
-| X-Json-MD5      | String      |  <p>Last MD5 hash of the feed. If the feed hasn't changed, the response status will be 304.</p>             |
-
-### Success Response
-
-Success-Response:
-
-```
+```shell
 HTTP/1.1 200 OK
 
 [
@@ -311,6 +338,19 @@ HTTP/1.1 200 OK
   }
 ]
 ```
+
+<p>Get list of categories</p>
+
+  GET /categories
+
+### Headers
+
+| Name    | Type      | Description                          |
+|---------|-----------|--------------------------------------|
+| Authorization     | String      |  <p>Basic + authorization token<br />e.g. 'Basic fqQfg7a6dg5A='</p>             |
+| X-Json-MD5      | String      |  <p>Last MD5 hash of the feed. If the feed hasn't changed, the response status will be 304.</p>             |
+
+
 ## Get category
 
 <p>Get category by ID</p>
